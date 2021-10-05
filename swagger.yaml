@@ -1,0 +1,131 @@
+basePath: /api/v1/
+consumes:
+- application/json
+definitions:
+  UUID:
+    items:
+      format: uint8
+      type: integer
+    type: array
+    x-go-package: github.com/gocql/gocql
+  User:
+    properties:
+      email:
+        type: string
+        x-go-name: Email
+      firstname:
+        type: string
+        x-go-name: Firstname
+      id:
+        $ref: '#/definitions/UUID'
+      lastname:
+        type: string
+        x-go-name: Lastname
+    type: object
+    x-go-package: github.com/KindCloud97/SimpleREST/user
+host: 127.0.0.1:8000
+info:
+  description: Documentation of our awesome API.
+  title: SimpleREST
+  version: 1.0.0
+paths:
+  /api/v1/users:
+    post:
+      operationId: createUser
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/User'
+      produces:
+      - application/json
+      responses:
+        "400":
+          $ref: '#/responses/badRequest'
+      tags:
+      - users
+    put:
+      operationId: updateUser
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/User'
+      produces:
+      - application/json
+      responses:
+        "400":
+          $ref: '#/responses/badRequest'
+      tags:
+      - users
+  /api/v1/users/:
+    get:
+      description: returns users
+      operationId: getUsers
+      produces:
+      - application/json
+      responses:
+        "200":
+          $ref: '#/responses/UsersGetResponse'
+        "400":
+          $ref: '#/responses/badRequest'
+      tags:
+      - users
+  /api/v1/users/{id}:
+    delete:
+      operationId: deleteUser
+      parameters:
+      - description: Specifies uuid for a user
+        example: 3ca4ce84-ed71-42aa-8d1a-c0e001d3b8b4
+        in: path
+        name: id
+        required: true
+        type: string
+        uniqueItems: true
+        x-go-name: Id
+      produces:
+      - application/json
+      responses:
+        "400":
+          $ref: '#/responses/badRequest'
+      tags:
+      - users
+    get:
+      description: returns user by specified id
+      operationId: getUser
+      parameters:
+      - description: Specifies uuid for a user
+        example: 3ca4ce84-ed71-42aa-8d1a-c0e001d3b8b4
+        in: path
+        name: id
+        required: true
+        type: string
+        uniqueItems: true
+        x-go-name: Id
+      produces:
+      - application/json
+      responses:
+        "200":
+          $ref: '#/responses/UserGetIdResponse'
+        "400":
+          $ref: '#/responses/badRequest'
+      tags:
+      - users
+produces:
+- application/json
+responses:
+  UserGetIdResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/User'
+  UsersGetResponse:
+    description: ""
+    schema:
+      items:
+        $ref: '#/definitions/User'
+      type: array
+  badRequest:
+    description: Error struct with error explanation string
+schemes:
+- http
+swagger: "2.0"

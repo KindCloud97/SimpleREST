@@ -1,0 +1,26 @@
+version: "3.4"
+services:
+  db:
+    image: "cassandra"
+    volumes:
+      - ./cassandra-data:/var/lib/cassandra
+    #ports:
+     # - "9042:9042"
+    restart: always
+    #healthcheck:
+     # test: [ "CMD-SHELL", "nodetool -u cassandra -pw cassandra verify simplerest simplerest.users" ]
+      #interval: 10s
+      #timeout: 5s
+      #retries: 15
+      #start_period: 40s
+  apiserver:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deploy
+    ports:
+      - "8000:8000"
+      - "8080:8080"
+    depends_on:
+      - db

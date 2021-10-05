@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package SimpleREST;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "proto/";
+
+// Creates an item in the database
+service CRUD {
+    rpc GetAllUsers (google.protobuf.Empty) returns (GetAllUsersResponse) {}
+    rpc GetUser (GetUserRequest) returns (User) {}
+    rpc CreateUser (CreateUserRequest) returns (User) {}
+    rpc UpdateUser (UpdateUserRequest) returns (User) {}
+    rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty) {}
+}
+
+message User {
+    string id = 1;
+    string email = 2;
+    string firstname = 3;
+    string lastname = 4;
+}
+
+message GetAllUsersResponse {
+    repeated User users = 1;
+}
+
+message GetUserRequest {
+    string id = 1;
+}
+
+message CreateUserRequest {
+    User user = 1;
+
+}
+message UpdateUserRequest {
+    User user = 1;
+}
+
+message DeleteUserRequest {
+    string id = 1;
+}
